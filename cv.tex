@@ -1,0 +1,287 @@
+\documentclass[10pt,a4paper]{article}
+
+% == Packages ==
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[top=0.40in, bottom=0.40in, left=0.58in, right=0.58in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\newif\ifhasulem
+\IfFileExists{ulem.sty}{\usepackage[normalem]{ulem}\hasulemtrue}{\hasulemfalse}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{ragged2e}
+\usepackage[skip=0pt]{parskip}
+\usepackage[none]{hyphenat} % never break words across lines
+\sloppy % allow extra stretch instead of hyphenating
+\linespread{0.985} % identical line spacing on both pages
+% Underline helper: uses ulem's \uline (handles line breaks correctly) when
+% available, falling back to the core \underline otherwise.
+\ifhasulem
+  \let\myuline\uline
+\else
+  \let\myuline\underline
+\fi
+
+% == Font ==
+% Arimo (metrically compatible with Arial) is the primary font  clean,
+% geometric, and standard, with uniform lining figures so every digit
+% (0-9) shares the same height and width. Falls back automatically to
+% Helvetica if Arimo isn't found, so this compiles identically under
+% pdfLaTeX, XeLaTeX, or LuaLaTeX with zero missing-font risk.
+\usepackage{iftex}
+\IfFileExists{arimo.sty}{%
+  \usepackage[sfdefault]{arimo}
+}{%
+  \usepackage[scaled=0.92]{helvet}
+  \renewcommand{\familydefault}{\sfdefault}
+}
+
+% == Icons ==
+% fontawesome5 gives clean, professional icons for contact details and
+% project links. Falls back to plain text if unavailable, so this always
+% compiles safely.
+\IfFileExists{fontawesome5.sty}{%
+  \usepackage{fontawesome5}
+  \newcommand{\iconLocation}{\faIcon{map-marker-alt}}
+  \newcommand{\iconPhone}{\faIcon{phone-alt}}
+  \newcommand{\iconEmail}{\faEnvelope}
+  \newcommand{\iconLinkedIn}{\faLinkedin}
+  \newcommand{\iconGithub}{\faGithub}
+  \newcommand{\iconWeb}{\faGlobe}
+  \newcommand{\iconExtLink}{\faIcon{external-link-square-alt}}
+}{%
+  \newcommand{\iconLocation}{}
+  \newcommand{\iconPhone}{}
+  \newcommand{\iconEmail}{}
+  \newcommand{\iconLinkedIn}{}
+  \newcommand{\iconGithub}{}
+  \newcommand{\iconWeb}{}
+  \newcommand{\iconExtLink}{}
+}
+% "Repository \faExternalLinkAlt" / "Live Demo \faExternalLinkAlt" style link
+\newcommand{\repolink}[1]{\mbox{\href{#1}{\myuline{Github}}}}
+\newcommand{\demolink}[1]{\mbox{\href{#1}{\myuline{Live Demo}}}}
+
+% == Colors ==
+\definecolor{accent}{HTML}{000000}
+\definecolor{textgray}{HTML}{000000}
+\definecolor{linkblue}{HTML}{1155CC}
+
+\color{textgray}
+
+% == Hyperlink styling ==
+\hypersetup{
+  colorlinks=true,
+  urlcolor=linkblue,
+  linkcolor=linkblue,
+}
+\urlstyle{same} % make \url text use the body font instead of monospace
+
+% == Section heading style ==
+\titleformat{\section}
+  {\color{accent}\bfseries\fontsize{11}{13}\selectfont}
+  {}{0em}{}
+  [{\color{accent}\titlerule[0.9pt]}]
+\titlespacing*{\section}{0pt}{8pt}{4pt}
+
+% == List style ==
+\setlist[itemize]{leftmargin=13pt, itemsep=1.0pt, topsep=1.5pt, parsep=0pt}
+\newlength{\cvprojectgap}
+\setlength{\cvprojectgap}{9pt} % moderate gap BETWEEN projects
+
+% == Helper: title + right-aligned date line ==
+\newcommand{\titledate}[2]{%
+  \noindent\textbf{#1}\hfill #2\par
+}
+\newcommand{\titledateplain}[2]{%
+  \noindent#1\hfill #2\par
+}
+
+% == Helper: project block (keeps header/tech/bullets together; the
+% link icon sits inline right after the title instead of far right)
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newenvironment{cvproject}[5]{%
+  % #1 = main title   #2 = optional bracketed subtitle (or empty)
+  % #3 = link icon     #4 = technologies list   #5 = year range
+  \par\noindent\begin{minipage}{\linewidth}
+  \noindent\begin{tabularx}{\linewidth}{@{}L r@{}}
+    \textbf{#1}~~{\small\color{linkblue}#3} & {#5} \\
+  \end{tabularx}\par
+  \def\cvsubtitle{#2}%
+  \ifx\cvsubtitle\empty\else\textbf{#2}\par\fi
+  \vspace{0pt}
+  \textit{\textbf{Technologies:} #4}\par
+  \vspace{0pt}
+  \begin{itemize}[leftmargin=13pt, topsep=0pt, itemsep=0.6pt, parsep=0pt]
+}{%
+  \end{itemize}
+  \end{minipage}\par\vspace{\cvprojectgap}
+}
+
+\pagenumbering{gobble}
+
+\begin{document}
+
+% ================= HEADER =================
+\begin{center}
+{\color{accent}\bfseries\fontsize{22}{24}\selectfont SAVANDI KODITHUWAKKU}\par
+\vspace{4pt}
+Colombo, Sri Lanka \ $|$ \ \myuline{\href{tel:+94716185110}{\textcolor{black}{+94 71 618 5110}}} \ $|$ \ \myuline{\href{mailto:savandikodithuwakku@gmail.com}{savandikodithuwakku@gmail.com}}\par
+\vspace{2pt}
+\myuline{\href{https://savandi.vercel.app/}{Website}} \ $|$ \ \myuline{\href{https://www.linkedin.com/in/savandi-kodithuwakku/}{LinkedIn}} \ $|$ \ \myuline{\href{https://github.com/savandikodithuwakku}{GitHub}}
+\end{center}
+
+% Tighten excessive whitespace below the contact details.
+\vspace{-4pt}
+{\color{accent}\rule{\linewidth}{1pt}}
+
+% ================= PROFESSIONAL SUMMARY =================
+\section{Professional Summary}
+Third year Information Technology undergraduate at the University of Moratuwa with experience in full stack development, backend engineering, and AI/ML integration through academic and industry projects. Skilled in developing scalable applications and solving technical challenges. Seeking a Software Engineering internship to contribute to real world projects and gain industry experience.
+
+% ================= EDUCATION =================
+\section{Education}
+\titledate{BSc (Hons) in Information Technology - University of Moratuwa}{2024 -- 2028}
+Cumulative GPA: 3.80 \ \ | \ \ Dean's List - Semester 1
+\vspace{6pt}
+
+\titledate{G.C.E. Advanced Level - Sanghamiththa Balika Vidyalaya, Galle}{2019 -- 2022}
+Z-Score: 1.7230
+
+% ================= TECHNICAL SKILLS =================
+\section{Technical Skills}
+\begin{itemize}
+  \item \textbf{Programming Languages:} Python, JavaScript, TypeScript, Java, C, PHP, SQL
+  \item \textbf{Frontend:} React, Next.js, HTML, CSS, Tailwind CSS, Bootstrap
+  \item \textbf{Backend:} Node.js, Express.js, Django, Spring Boot, Flask, FastAPI, Celery, REST APIs
+  \item \textbf{Databases:} MySQL, MongoDB, Microsoft SQL Server
+  \item \textbf{Data Science \& ML:} NumPy, pandas, scikit-learn, RAG, LLMs, Gemini, Ollama
+  \item \textbf{Cloud \& Deployment:} AWS, Docker, Vercel, Render
+  \item \textbf{Developer Tools:} Git, GitHub, Postman, Google Colab, Ubuntu, Figma
+  \item \textbf{Methodologies:} Agile, Scrum
+\end{itemize}
+
+% ================= PROJECTS =================
+\section{Projects}
+
+\par\noindent\begin{minipage}{\linewidth}
+\noindent\begin{tabularx}{\linewidth}{@{}L r@{}}
+  \textbf{DocFlow - Document Management System - Client: IXD Labs}~~{\small\color{linkblue}\repolink{https://github.com/CodeCraft-Software-Project-46/DOC-Flow-Frontend-React}} & {2025 -- 2026} \\
+\end{tabularx}\par
+\textit{\textbf{Technologies:} React, TypeScript, Tailwind CSS, Django, MySQL, Redis, Celery, AWS, Gemini, Ollama}\par
+\vspace{0pt}
+\begin{itemize}[leftmargin=13pt, topsep=0pt, itemsep=0.6pt, parsep=0pt]
+  \item Developed an enterprise document and workflow management platform for IXD Labs, supporting document management, workflow automation, SLA monitoring, performance analytics, and assistance powered by AI.
+\end{itemize}
+\noindent My contributions:
+\begin{itemize}[leftmargin=13pt, itemsep=0.6pt, topsep=0pt, parsep=0pt]
+  \item Implemented an AI chatbot with RAG based information retrieval, natural language to SQL query generation, and configurable LLM providers, including Gemini fallback models and Ollama integration.
+  \item Engineered a configurable working hours and SLA management system supporting holiday schedules, deadline calculations based on business hours, and automated breach monitoring.
+  \item Developed KPI and workflow analytics dashboards to visualize performance metrics and support operational monitoring.
+\end{itemize}
+\end{minipage}\par\vspace{\cvprojectgap}
+
+\begin{cvproject}{CompeteLK - University Competition Discovery Platform \ [Ongoing]}{}{\repolink{https://github.com/savandikodithuwakku/competelk-backend}}{Java, Spring Boot, React, MySQL, REST APIs}{2026}
+  \item Developing a full-stack platform for university students to discover, search, and participate in competitions, featuring verified organizer publishing, dashboards, team formation, and deadline reminders.
+  \item Implementing interest-based recommendations and maintaining historical competition data, including winners, teams, projects, technologies, and results, to improve competition discovery and insights.
+\end{cvproject}
+
+\begin{cvproject}{HelloLobby - Hotel Management System \ [Ongoing]}{}{\repolink{https://github.com/savandikodithuwakku/Hello-Lobby-Hotel-Management-System-Frontend}}{React, Node.js, Express, MongoDB, JWT, REST APIs}{2026}
+  \item Developing a full stack hotel management platform that centralizes reservations, room management, guest services, staff operations, payments, reporting, and administrative workflows.
+  \item Implementing authentication and authorization based on user roles, room and reservation management, availability tracking, front desk operations, and secure API communication across the system.
+  \item Extending the platform with capabilities powered by AI, including an intelligent hotel assistant, automated insights and reporting, and recommendation features to support guests and hotel staff.
+\end{cvproject}
+
+\begin{cvproject}{UniThaksalawa - Location Aware Education Platform \ [Group Project]}{}{\repolink{https://github.com/Lumos-Solution/uni-thaksalawa-frontend}}{React, Tailwind CSS, MongoDB, Express.js, Node.js}{2025 -- 2026}
+  \item Built an education platform that uses location data to help students discover nearby educational classes.
+  \item[]\hspace*{-13pt}\parbox[t]{\dimexpr\linewidth+13pt\relax}{\raggedright My contribution: Implemented the My Classes and My Enrollments modules, including class creation, backend data fetching, and enrollment displays.}
+\end{cvproject}
+
+% Page 2: use the same section and project spacing hierarchy as page 1.
+\newpage
+\setlength{\cvprojectgap}{9pt}
+\titlespacing*{\section}{0pt}{8pt}{4pt}
+
+\begin{cvproject}{Product Store - Full Stack Ecommerce Platform}{}{\repolink{https://github.com/savandikodithuwakku/Product-Store-Frontend}}{React, Node.js, Express.js, MongoDB}{2025}
+  \item Built a full stack ecommerce application with product management functionality.
+  \item Integrated the React frontend with backend APIs for product and store operations.
+\end{cvproject}
+
+\begin{cvproject}{Laptop Price Predictor - Machine Learning Web App}{}{\repolink{https://github.com/savandikodithuwakku/Laptop-price-predictor}}{Flask, HTML, CSS, JavaScript, Bootstrap}{2025}
+  \item Created a machine learning web application that predicts laptop prices based on hardware specifications.
+  \item Trained a machine learning model using laptop hardware specifications and integrated it into a web application to predict laptop prices.
+\end{cvproject}
+
+\begin{cvproject}{Heritage Information System \ [Group Project]}{}{\repolink{https://github.com/orgs/FOA-Project/repositories}}{Next.js, React, FastAPI}{2025}
+  \item Contributed to a full stack platform for managing and publishing architectural and cultural heritage content.
+  \item[]\hspace*{-13pt}\parbox[t]{\dimexpr\linewidth+13pt\relax}{\raggedright My contribution: Implemented login and signup functionality, including authentication interfaces and backend API integration.}
+\end{cvproject}
+
+
+
+\begin{cvproject}{MicroMinds - Arduino-Based CNC Foam Cutting Interface \ [Group Project]}{}{\repolink{https://github.com/Micro-Minds/foam-cutter-frontend} \ \demolink{https://cnc-foam-cutter.web.app/signin}}{React, Tailwind CSS, Arduino, ESP32, Firebase}{2024 -- 2025}
+  \item Collaborated on a CNC foam cutting system using Arduino with a web interface for designing and managing cutting tasks.
+  \item[]\hspace*{-13pt}\parbox[t]{\dimexpr\linewidth+13pt\relax}{\raggedright My contribution: Implemented the Shape Input, Review, History, and Library modules, and contributed to hardware integration involving GRBL, ESP32, and the TFT display.}
+\end{cvproject}
+
+\begin{cvproject}{SpiritX - Sports Management System \ [Group Project]}{}{\repolink{https://github.com/ByteShiftTeam/Admin}}{PHP, MySQL, HTML, CSS, JavaScript}{2025}
+  \item Built a fantasy cricket platform for universities featuring team creation, player statistics, budget management, and leaderboards.
+  \item[]\hspace*{-13pt}\parbox[t]{\dimexpr\linewidth+13pt\relax}{\raggedright My contribution: Implemented the admin dashboard with player management CRUD operations, dynamic statistics, tournament insights, and profile management.}
+\end{cvproject}
+
+% Consistent list spacing within non-project sections.
+\setlist[itemize]{leftmargin=13pt, itemsep=1.0pt, topsep=1pt, parsep=0pt}
+
+\vspace{-5pt}
+% ================= PROFESSIONAL EXPERIENCE =================
+\section{Professional Experience}
+\begin{itemize}
+  \item Data Annotator - ThakralOne \hfill 2025 -- 2026
+    \begin{itemize}[label=\textbullet, leftmargin=13pt, topsep=1pt, itemsep=0pt]
+      \item Annotated and classified objects in images using bounding boxes to support computer vision and machine learning datasets.
+    \end{itemize}
+  \item Technical Content Writer - \href{https://medium.com/@savandikodithuwakku}{Medium} \hfill 2024 -- Present
+\end{itemize}
+
+% ================= ACHIEVEMENTS =================
+\section{Achievements}
+\begin{itemize}
+  \item Top 10 Finalist - OctWave 3.0 AI/ML Initiative, IEEE IAS Student Branch \hfill 2026
+  \item Finalist - InspiHer Hackerina, SLTC Research University \hfill 2025
+  \item Participant - AgentX Bootcamp on AI Agents, University of Moratuwa \(\times\) Zone24x7 \hfill 2025
+  \item Participant - ReidXtreme 3.0 Hackathon, UCSC \hfill 2024
+\end{itemize}
+
+% ================= CERTIFICATIONS =================
+\section{Certifications}
+\begin{itemize}[leftmargin=13pt, itemsep=1.2pt, topsep=1pt, parsep=0pt]
+  \item Postman API Fundamentals Student Expert - Postman \hfill 2025
+  \item Python for Data Science - IBM \hfill 2024
+  \item Introduction to Generative AI - Google Cloud \hfill 2024
+\end{itemize}
+
+% ================= LEADERSHIP & VOLUNTEERING =================
+\section{Leadership \& Volunteering}
+\begin{itemize}
+  \item Director of Design and Publicity - WIE IEEE Affinity Branch, University of Moratuwa \hfill 2026 -- 2027
+  \item Co-Chair, Debractor 6.0, Rotaract Club, University of Moratuwa \hfill 2026
+  \item Lead, Video Editing Committee - Enguinity 2.0, WIE IEEE Student Branch \hfill 2025 -- 2026
+  \item Organizing Committee Member - 9th International Conference on IT Research \hfill 2025
+  \item Organizing Committee Member - FIT Future Careers \hfill 2025
+  \item Web \& Technology Pillar Member - MoraSpirit \hfill 2025 -- 2026
+  \item Volunteer Teacher \& Motivational Speaker - Sasnaka Sansada \hfill 2023 -- 2025
+\end{itemize}
+
+% ================= REFERENCES =================
+\section{References}
+\noindent\textbf{Prof. Supunmali Ahangama}\\
+Professor, Faculty of Information Technology, University of Moratuwa\\
+\href{tel:+94714866652}{\textcolor{black}{+94 71 486 6652}} \ $|$ \ \href{mailto:supunmali@uom.lk}{supunmali@uom.lk}
+\par\vspace{4pt}
+\noindent\textbf{Sunera Avinash}\\
+Co-Founder, Director and CTO, iXD Labs\\
+\href{tel:+94768336850}{\textcolor{black}{+94 76 833 6850}} \ $|$ \ \href{mailto:sunera@ixdlabs.com}{sunera@ixdlabs.com}
+
+\end{document}
